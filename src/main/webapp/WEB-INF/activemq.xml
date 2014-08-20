@@ -43,13 +43,13 @@
 
 	<bean id="pooledConnectionFactory" class="org.apache.activemq.pool.PooledConnectionFactory"
 		init-method="start" destroy-method="stop">
-		<property name="maxConnections" value="8" />
+		<property name="maxConnections" value="100" />
 		<property name="connectionFactory" ref="jmsConnectionFactory" />
 	</bean>
 
 	<bean id="jmsConfig" class="org.apache.camel.component.jms.JmsConfiguration">
 		<property name="connectionFactory" ref="pooledConnectionFactory" />
-		<property name="concurrentConsumers" value="10" />
+		<property name="concurrentConsumers" value="30" />
 	</bean>
 
 	<bean id="activemq" class="org.apache.activemq.camel.component.ActiveMQComponent">

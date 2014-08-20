@@ -1,46 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:camel="http://camel.apache.org/schema/spring"
-	xmlns:amq="http://activemq.apache.org/schema/core" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:camel="http://camel.apache.org/schema/spring"
+	xmlns:amq="http://activemq.apache.org/schema/core" 
+	xmlns:context="http://www.springframework.org/schema/context"
 	xsi:schemaLocation="
        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
        http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd
        http://activemq.apache.org/schema/core http://activemq.apache.org/schema/core/activemq-core.xsd">
 
+	<!-- enable Spring @Component scan -->
+	<context:component-scan base-package="com.test.camel_restlet" />
+
 	<!-- Simple camel route which send every one minute a message on the console. -->
-	<camelContext xmlns="http://camel.apache.org/schema/spring">
-
+	<camel:camelContext>
+		<camel:contextScan />
 		<camel:jmxAgent id="agent" createConnector="true" />
-
-		<route id="route1-timer">
-			<from uri="timer://foo?fixedRate=true&amp;period=60s" />
-			<transform>
-				<simple>Hello Web Application, how are you?</simple>
-			</transform>
-			<to uri="stream:out" />
-		</route>
-
-		<route id="rout2-restlet">
-			<from uri="restlet:/demo/{id}" />
-			<transform>
-				<simple>Request type : ${header.CamelHttpMethod} and ID : ${header.id}</simple>
-			</transform>
-		</route>
-
-		<route id="route3-restletamq">
-			<from uri="restlet:/queue/{id}" />
-			<transform>
-				<simple>${header.id}</simple>
-			</transform>
-			<to uri="activemq:foo" />
-		</route>
-
-		<route id="route4-restletamq">
-			<from uri="activemq:foo" />
-			<to uri="mock:file" />
-		</route>
-
-	</camelContext>
+	</camel:camelContext>
 
 	<bean id="RestletComponent" class="org.restlet.Component" />
 

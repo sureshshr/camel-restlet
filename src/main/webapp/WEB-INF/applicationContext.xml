@@ -37,8 +37,7 @@
 
 		<route id="route4-restletamq">
 			<from uri="activemq:foo" />
-			<to
-				uri="file:///tmp/activemq/?fileExist=Append&amp;fileName=message-${date:now:yyyyMMddHHmmss}.txt" />
+			<to uri="mock:file" />
 		</route>
 
 	</camelContext>
